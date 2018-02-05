@@ -7,49 +7,49 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="" onsubmit="return false;">
-        <input type="text" name="message" value="">
-        <br>
-        <br>
-        <input type="button" value="发送webscoket请求" onclick="send(this.form.message.value)">
-        <hr style="color: red">
-        <h2>应答</h2>
-        <textarea id="response" style="width: 1024px; height: 300px" name="" id="" cols="30" rows="10"></textarea>
-    </form>
+<form action="" onsubmit="return false;">
+    <input type="text" name="message" value="">
+    <br>
+    <br>
+    <input type="button" value="发送webscoket请求" onclick="send(this.form.message.value)">
+    <hr style="color: red">
+    <h2>应答</h2>
+    <textarea id="response" style="width: 1024px; height: 300px" name="" id="" cols="30" rows="10"></textarea>
+</form>
 </body>
 <script>
     var socket;
-    if(!window.WebSocket){
+    if (!window.WebSocket) {
         window.WebSocket = window.MozWebSocket;
     }
 
-    if(window.WebSocket){
+    if (window.WebSocket) {
         socket = new WebSocket("ws://localhost:8888/websocket");
-        socket.onmessage = function(event){
+        socket.onmessage = function (event) {
             var ta = document.getElementById("response");
-            ta.value += event.data +"\r\n";
+            ta.value += event.data + "\r\n";
         }
-        socket.onopen = function(event){
+        socket.onopen = function (event) {
             var ta = document.getElementById("response");
-            ta.value = "您当前的浏览器支持websocket\r\n" 
+            ta.value = "您当前的浏览器支持websocket\r\n"
         }
 
-        socket.onclose = function(event){
+        socket.onclose = function (event) {
             var ta = document.getElementById("response");
             ta.value = "";
             ta.value = "连接关闭";
         }
-    }else{
+    } else {
         alert("你的浏览器不支持WebSocket")
     }
 
-    function send(message){
-        if(!window.WebSocket){
+    function send(message) {
+        if (!window.WebSocket) {
             return;
-        } 
-        if(socket.readyState == WebSocket.OPEN){
+        }
+        if (socket.readyState == WebSocket.OPEN) {
             socket.send(message)
-        }else {
+        } else {
             alert("连接没有建立成功")
         }
     }
